@@ -1,0 +1,14 @@
+p2=Are you kidding me?
+mc=What's wrong?
+p2=We're out of fuel.
+p2=Didn't you fill the tank earlier?
+mc=...
+p2=...
+p2=I'm taking that as a no.
+mc=...sorry.
+p2=Nothing we can do about it now. It's fine.
+p2=Call the mechanic, would you?
+computer=Click TAB to open your phone
+phone= 
+com= 
+p2=hi
