@@ -49,6 +49,13 @@ class gs1 extends Gamestate{
     } else println("not going to phone");
   }*/
 }
+  
+  void checkGoalBox(){
+    if(dialogueNumber>=2){
+      ifGoal = true;
+    }
+  }
+    
     
   private int t;
 }

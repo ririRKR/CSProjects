@@ -23,7 +23,7 @@ void setup() {
   p2 = "B";
   computer = "";
   pixel = createFont("dogica.ttf", 30);
-  smallPixel = createFont("dogica.ttf", 10);
+  smallPixel = createFont("dogica.ttf", 15);
   cGSN = 1;
   
   dg0file = "Dgs0.txt";
@@ -73,14 +73,6 @@ void mousePressed() {
 
   gamestates.get(cGSN).mouseInteraction();
 
-  /*
-  if(gamestates.get(currentGS).getMenu() == false){ //if it's not in the menu
-   gamestates.get(currentGS).gsKP();
-   } else if (gamestates.get(currentGS).getMenu() == true && gamestates.get(currentGS).getMenuDone() == true){
-   //gamestates.get(currentGS).leaveMenu();
-   gamestates.get(currentGS).gsKP();
-   }
-   */
 }
 
 void keyPressed() {
@@ -89,14 +81,6 @@ void keyPressed() {
     gamestates.get(cGSN).move();
   }
   gamestates.get(cGSN).keyInteraction();
-  /*else if(keyCode == TAB){
-   if(currentGS == 1){
-   // println("hi");
-   gamestates.get(currentGS).toMenu();
-   } else {
-   gamestates.get(currentGS).changeMenu();
-   }
-   */
 }
 
 ArrayList<Dialogue> loadDialogue(String filename) {
