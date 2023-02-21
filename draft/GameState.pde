@@ -64,6 +64,7 @@ class Gamestate {
     fill(0);
     pushMatrix();
     translate(center.x-p.x, center.y-p.y);
+    //subtract by amount translating by moveX vs moveY for translation of the mouse coords
     println(mouseX + " " + mouseY);
     m();
     circle(100, 100, 200);
