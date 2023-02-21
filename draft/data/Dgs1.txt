@@ -1,0 +1,3 @@
+com=Use your arrow keys to move around, and click your mouse on objects near you to interact with them.
+com=Good job! Enjoy the game!
+ = 

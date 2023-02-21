@@ -4,9 +4,10 @@ class Gamestate {
     type = typeIn;
     dialogueA = dialogueAIn;
     change = changeIn;
+    center = new PVector(width/2, height/2);
     p = new PVector(width/2, height/2);
-    npc = new PVector(0, 0);
-    inc = 1;
+    npc = new PVector(width/2, height/2);
+    inc = 1; w = 75;
     ifMenu = false;
     position = new ArrayList<PVector>();
     position.add(new PVector(p.x, p.y));
@@ -49,11 +50,26 @@ class Gamestate {
     text(dialogueA.get(dialogueNumber).getName(), width/12, height*.65);
     rectMode(CENTER);
   }
+  
+  void goalBox(){
+    textFont(smallPixel);
+    text(goal, width/2, height/12);
+  }
 
 
   void movement() {
-    circle(p.x, p.y, 75);
-    circle(npc.x, npc.y, 75);
+    fill(0);
+    pushMatrix();
+    translate(center.x-p.x, center.y-p.y);
+    m();
+    circle(100, 100, 200);
+    square(500, 600, 200);
+    popMatrix();
+    
+    if(!dialogueA.get(dialogueNumber).getSpeech().equals("")){ //if there is something to say
+      dialogue();
+    }
+    /*
     if (p.x>width) {
       p.x = 50;
     } else if (p.x < 0) {
@@ -62,24 +78,29 @@ class Gamestate {
       p.y = 0;
     } else if (p.y < 0) {
       p.y = height;
-    }
+    }*/
+  }
+  void m(){
+     circle(p.x, p.y, w);
+    circle(npc.x, npc.y, w);
   }
 
   void move() {
-    if (keyCode == DOWN) {
+    
+    if (keyCode == DOWN && p.y+w < height) {
       p.y+=10;
-    } else if (keyCode == UP) {
+    } else if (keyCode == UP && p.y-w > 0) {
       p.y-=10;
-    } else if (keyCode == LEFT) {
+    } else if (keyCode == LEFT && p.x-w > 0) {
       p.x-=10;
-    } else if (keyCode == RIGHT) {
+    } else if (keyCode == RIGHT && p.x+w < width) {
       p.x+=10;
     }
     position.add(new PVector(p.x, p.y));
 
     npc.x = position.get(0).x;
     npc.y = position.get(0).y;
-    if (position.size()>10) {
+    if (position.size()>25) {
       position.remove(0);
     }
   }
@@ -131,7 +152,6 @@ class Gamestate {
   }
 
 
-
   void gsKP() {
     
   }
@@ -146,6 +166,10 @@ class Gamestate {
   
   void keyInteraction(){}
 
+
+  PVector getP(){
+    return p;
+  }
   /*
     void movementTest(){
    circle(x, y, 100);
@@ -165,7 +189,10 @@ class Gamestate {
   private ArrayList<PVector> position;
   private boolean ifMenu;
   private boolean menuDone;
+  protected String goal;
 
-  private int x, y;
+  //private int x, y;
+  private PVector center;
   private int inc;
+  private int w; 
 }

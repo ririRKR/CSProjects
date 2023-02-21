@@ -1,6 +1,6 @@
 import java.util.*;
 
-PFont pixel;
+PFont pixel; PFont smallPixel;
 ArrayList<Gamestate> gamestates;
 ArrayList<Dialogue> DG0;
 ArrayList<Dialogue> DG1;
@@ -10,7 +10,7 @@ String mc;
 String p2;
 String computer;
 
-String dg0file;
+String dg0file; String dg1file;
 
 void setup() {
   size(1440, 900);
@@ -23,23 +23,24 @@ void setup() {
   p2 = "B";
   computer = "";
   pixel = createFont("dogica.ttf", 30);
-  cGSN = 0;
+  smallPixel = createFont("dogica.ttf", 10);
+  cGSN = 1;
   
   dg0file = "Dgs0.txt";
+  dg1file = "Dgs1.txt";
   
   ArrayList<Dialogue> DG0 = new ArrayList<Dialogue>();
   DG0 = loadDialogue(dg0file);
   // DG0.add(new Dialogue("", ""));
 
 
-  DG1 = new ArrayList<Dialogue>();
-  DG1.add(new Dialogue(mc, "Hi3!"));
-  DG1.add(new Dialogue(p2, "H24!"));
+  ArrayList<Dialogue> DG1 = new ArrayList<Dialogue>();
+  DG1 = loadDialogue(dg1file);
 
 
   gamestates = new ArrayList<Gamestate>();
-  Gamestate gs0 = new gs0("dialogue", DG0, 13);
-  Gamestate gs1 = new Gamestate("dialogue", DG1, 2);
+  Gamestate gs0 = new gs0("dialogue", DG0, 18);
+  Gamestate gs1 = new gs1("movement", DG1, 4);
   gamestates.add(gs0);
   gamestates.add(gs1);
 
@@ -50,7 +51,8 @@ void draw() {
   background(255);
 
   Gamestate currentGS = gamestates.get(cGSN);
-  println(currentGS.getDialogueNumber());
+  //println(currentGS.getDialogueNumber() + " " + cGSN);
+  //println(currentGS.getP());
 
   if (cGSN == 0 && currentGS.getDialogueNumber() == 11) {
     currentGS.phone();
@@ -63,13 +65,13 @@ void draw() {
   }
 }
 
-void mouseClicked() {
+void mousePressed() {
   gamestates.get(cGSN).gsKP();
   if (gamestates.get(cGSN).gsInc() == true) {
     cGSN++;
   }
 
-  //gamestates.get(cGSN).mouseInteraction();
+  gamestates.get(cGSN).mouseInteraction();
 
   /*
   if(gamestates.get(currentGS).getMenu() == false){ //if it's not in the menu
@@ -82,9 +84,9 @@ void mouseClicked() {
 }
 
 void keyPressed() {
-  println(currentGS);
+  //println(currentGS);
   if (keyCode == DOWN || keyCode == UP || keyCode == LEFT || keyCode == RIGHT) {
-    currentGS.move();
+    gamestates.get(cGSN).move();
   }
   gamestates.get(cGSN).keyInteraction();
   /*else if(keyCode == TAB){

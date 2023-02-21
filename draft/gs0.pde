@@ -27,4 +27,5 @@ class gs0 extends Gamestate{
        dialogueNumber++;
     } else println("not going to phone");
   }
+ 
 }
