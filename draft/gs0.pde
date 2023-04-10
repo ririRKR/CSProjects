@@ -13,6 +13,8 @@ class gs0 extends Gamestate{
        dialogueNumber++;
     } else if(dialogueNumber==11){
       mouseInteraction();
+    } else if(dialogueNumber==10){
+      println("PHONE");
     }
   }
   
@@ -23,9 +25,14 @@ class gs0 extends Gamestate{
   }
   
   void keyInteraction(){
-   if(dialogueNumber==10){
+   /*if(dialogueNumber!=10){
        dialogueNumber++;
     } else println("not going to phone");
+    */
+    
+    if(dialogueNumber==10 && keyCode == TAB){
+      dialogueNumber++;
+    }
   }
  
 }

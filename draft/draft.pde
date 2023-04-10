@@ -1,6 +1,8 @@
+import gifAnimation.*;
 import java.util.*;
 
 PFont pixel; PFont smallPixel;
+public PImage grassTest;
 ArrayList<Gamestate> gamestates;
 ArrayList<Dialogue> DG0;
 ArrayList<Dialogue> DG1;
@@ -9,6 +11,7 @@ int cGSN;
 String mc;
 String p2;
 String computer;
+public Gif fwalking; public Gif still; public Gif bwalking; public Gif rwalking; public Gif lwalking;
 
 String dg0file; String dg1file;
 
@@ -24,8 +27,17 @@ void setup() {
   computer = "";
   pixel = createFont("dogica.ttf", 30);
   smallPixel = createFont("dogica.ttf", 15);
-  cGSN = 1;
+  cGSN = 0;
+ 
+  fwalking = new Gif(this, "walking.gif");
+  still = new Gif(this, "still.gif");
+  bwalking = new Gif(this, "bwalking.gif");
+  rwalking = new Gif(this, "rwalking.gif");
+  lwalking = new Gif(this, "lwalking.gif");
   
+  grassTest = loadImage("grasstest.png");
+  grassTest.resize(width, height);
+ 
   dg0file = "Dgs0.txt";
   dg1file = "Dgs1.txt";
   
@@ -44,16 +56,23 @@ void setup() {
   gamestates.add(gs0);
   gamestates.add(gs1);
 
+  imageMode(CENTER);
 
 }
 
 void draw() {
-  background(255);
-
+  //background(255);
+  //pushMatrix();
+  //image(grassTest, width/2, height/2);
+  //popMatrix();
+  
+  
   Gamestate currentGS = gamestates.get(cGSN);
   //println(currentGS.getDialogueNumber() + " " + cGSN);
   //println(currentGS.getP());
 
+
+  println(currentGS.getDialogueNumber());
   if (cGSN == 0 && currentGS.getDialogueNumber() == 11) {
     currentGS.phone();
   } else {
@@ -67,11 +86,13 @@ void draw() {
 
 void mousePressed() {
   gamestates.get(cGSN).gsKP();
+  /*
   if (gamestates.get(cGSN).gsInc() == true) {
     cGSN++;
   }
+  */
 
-  gamestates.get(cGSN).mouseInteraction();
+  //gamestates.get(cGSN).mouseInteraction();
 
 }
 
@@ -110,4 +131,8 @@ ArrayList<Dialogue> loadDialogue(String filename) {
 
   }
     return DArrayList;
+}
+
+void keyReleased(){
+  gamestates.get(cGSN).sprite = still;
 }
