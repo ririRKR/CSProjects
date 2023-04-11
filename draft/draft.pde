@@ -2,7 +2,7 @@ import gifAnimation.*;
 import java.util.*;
 
 PFont pixel; PFont smallPixel;
-public PImage grassTest;
+public PImage grassTest; public PImage bgGS0;
 ArrayList<Gamestate> gamestates;
 ArrayList<Dialogue> DG0;
 ArrayList<Dialogue> DG1;
@@ -12,11 +12,14 @@ String mc;
 String p2;
 String computer;
 public Gif fwalking; public Gif still; public Gif bwalking; public Gif rwalking; public Gif lwalking;
+public Gif p2fwalking; public Gif p2still; public Gif p2bwalking; public Gif p2rwalking; public Gif p2lwalking;
 
 String dg0file; String dg1file;
 
 void setup() {
-  size(1440, 900);
+  
+  fullScreen();
+  //size(1440, 900);
   //fullScreen();
   background(255);
   textAlign(LEFT);
@@ -25,9 +28,9 @@ void setup() {
   mc = "A";
   p2 = "B";
   computer = "";
-  pixel = createFont("dogica.ttf", 30);
+  pixel = createFont("dogica.ttf", 28);
   smallPixel = createFont("dogica.ttf", 15);
-  cGSN = 0;
+  cGSN = 1;
  
   fwalking = new Gif(this, "walking.gif");
   still = new Gif(this, "still.gif");
@@ -35,24 +38,32 @@ void setup() {
   rwalking = new Gif(this, "rwalking.gif");
   lwalking = new Gif(this, "lwalking.gif");
   
+  p2fwalking = new Gif(this, "p2walking.gif");
+  p2still = new Gif(this, "p2still.gif");
+  p2bwalking = new Gif(this, "p2bwalking.gif");
+  p2rwalking = new Gif(this, "p2rwalking.gif");
+  p2lwalking = new Gif(this, "p2lwalking.gif");
+  
   grassTest = loadImage("grasstest.png");
   grassTest.resize(width, height);
+  bgGS0 = loadImage("2bgGS0.jpg");
+  bgGS0.resize(width+width*6/1440, height);
+  
+ 
  
   dg0file = "Dgs0.txt";
   dg1file = "Dgs1.txt";
   
   ArrayList<Dialogue> DG0 = new ArrayList<Dialogue>();
   DG0 = loadDialogue(dg0file);
-  // DG0.add(new Dialogue("", ""));
-
 
   ArrayList<Dialogue> DG1 = new ArrayList<Dialogue>();
   DG1 = loadDialogue(dg1file);
 
 
   gamestates = new ArrayList<Gamestate>();
-  Gamestate gs0 = new gs0("dialogue", DG0, 18);
-  Gamestate gs1 = new gs1("movement", DG1, 4);
+  Gamestate gs0 = new gs0("dialogue", DG0, 18, bgGS0);
+  Gamestate gs1 = new gs1("movement", DG1, 4, null);
   gamestates.add(gs0);
   gamestates.add(gs1);
 
@@ -60,19 +71,8 @@ void setup() {
 
 }
 
-void draw() {
-  //background(255);
-  //pushMatrix();
-  //image(grassTest, width/2, height/2);
-  //popMatrix();
-  
-  
+void draw() { 
   Gamestate currentGS = gamestates.get(cGSN);
-  //println(currentGS.getDialogueNumber() + " " + cGSN);
-  //println(currentGS.getP());
-
-
-  println(currentGS.getDialogueNumber());
   if (cGSN == 0 && currentGS.getDialogueNumber() == 11) {
     currentGS.phone();
   } else {
@@ -85,19 +85,10 @@ void draw() {
 }
 
 void mousePressed() {
-  gamestates.get(cGSN).gsKP();
-  /*
-  if (gamestates.get(cGSN).gsInc() == true) {
-    cGSN++;
-  }
-  */
-
-  //gamestates.get(cGSN).mouseInteraction();
-
+  gamestates.get(cGSN).mouseInteraction();
 }
 
 void keyPressed() {
-  //println(currentGS);
   if (keyCode == DOWN || keyCode == UP || keyCode == LEFT || keyCode == RIGHT) {
     gamestates.get(cGSN).move();
   }
@@ -135,4 +126,6 @@ ArrayList<Dialogue> loadDialogue(String filename) {
 
 void keyReleased(){
   gamestates.get(cGSN).sprite = still;
+  gamestates.get(cGSN).p2sprite = p2still;
+  println(gamestates.get(cGSN).p2sprite);
 }

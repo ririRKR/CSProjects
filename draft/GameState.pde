@@ -1,6 +1,6 @@
 import gifAnimation.*;
 class Gamestate {
-  Gamestate(String typeIn, ArrayList<Dialogue> dialogueAIn, int changeIn) {
+  Gamestate(String typeIn, ArrayList<Dialogue> dialogueAIn, int changeIn, PImage bgIn) {
     type = typeIn;
     dialogueA = dialogueAIn;
     change = changeIn;
@@ -12,22 +12,24 @@ class Gamestate {
     w = 75;
     ifGoal = false;
     f = 0;
+    positionDist = 75;
     sprite = still;
+    p2sprite = p2still;
+    
+    bg = bgIn;
+
+    
+    nextP2Pos = new PVector(0, 0);
     position = new ArrayList<PVector>();
-    position.add(new PVector(p.x, p.y));
-    position.add(new PVector(p.x-inc, p.y));
-    position.add(new PVector(p.x-inc*2, p.y));
-    position.add(new PVector(p.x-inc*3, p.y));
-    position.add(new PVector(p.x-inc*4, p.y));
-    position.add(new PVector(p.x-inc*5, p.y));
-    position.add(new PVector(p.x-inc*6, p.y));
-    position.add(new PVector(p.x-inc*7, p.y));
-    position.add(new PVector(p.x-inc*8, p.y));
-    position.add(new PVector(p.x-inc*9, p.y));
+    for(int i = 0; i < positionDist; i++){
+       position.add(new PVector(width/2, height/2));
+    }
   }
 
   void display() {
     if (type.equals("dialogue")) {
+      image(bg, width/2, height/2);
+     // background();
       dialogue();
     } else if (type.equals("movement")) {
       movement();
@@ -39,7 +41,13 @@ class Gamestate {
   }
 
   void dialogue() {
-     background(255);
+    
+    if(type.equals("dialogue")){
+      rectMode(CENTER);
+      fill(255, 50);
+      rect(width/2, height*.78, width, 200);
+    }
+    
     textFont(pixel);
     if (dialogueA.get(dialogueNumber).getName().equals("")) { //computer
       fill(#B4DDFF);
@@ -48,8 +56,8 @@ class Gamestate {
     }
     rectMode(CORNER);
     textLeading(75);
-    text(dialogueA.get(dialogueNumber).getSpeech(), width/12, height*.70, width*.90, height*.97);
-    text(dialogueA.get(dialogueNumber).getName(), width/12, height*.65);
+    text(dialogueA.get(dialogueNumber).getSpeech(), width/12, height*.80, width*.90, height*.97);
+    text(dialogueA.get(dialogueNumber).getName(), width/12, height*.75);
     rectMode(CENTER);
    
   }
@@ -75,15 +83,26 @@ class Gamestate {
     translate(center.x-p.x, center.y-p.y); 
     image(grassTest, width/2, height/2);
     totalObjDAC();
-    m();
-    image(sprite, p.x, p.y, width*100/1440, height*200/900);
-    sprite.loop();
+    
+    if(p.y<npc.y){
+      image(sprite, p.x, p.y, width*100/1440, height*200/900);
+      sprite.loop();
+      image(p2sprite, npc.x, npc.y, width*100/1440, height*200/900);
+      p2sprite.loop();
+    } else if(p.y>npc.y || p.y == npc.y){
+      image(p2sprite, npc.x, npc.y, width*100/1440, height*200/900);
+      p2sprite.loop();
+      image(sprite, p.x, p.y, width*100/1440, height*200/900);
+      sprite.loop();
+    }
+    
+    //println("npc.y: " + npc.y);
+    //println("p.y: " + p.y);
     
     circle(100, 100, 200);
     square(500, 600, 200);
     popMatrix();
     
-  
     
     fill(50);
    // text("mouseXY: " + mouseX + " " + mouseY, width/2, height/2);
@@ -108,31 +127,55 @@ class Gamestate {
   
   void m() {
     //circle(p.x, p.y, w);
-    circle(npc.x, npc.y, w);
+    nextP2Pos = position.get(1);
+
+    if(npc.x<nextP2Pos.x){ //if the npc is to the left of the next x position
+      p2sprite = p2rwalking; //move right
+    } else if(npc.x>nextP2Pos.x){
+      p2sprite = p2lwalking;
+    } else if(npc.x<nextP2Pos.x){
+      p2sprite = p2lwalking;
+    } else if(npc.y>nextP2Pos.y){
+      p2sprite = p2bwalking;
+    } else if(npc.y<nextP2Pos.y){
+      p2sprite = p2fwalking;
+    } else if(npc.x == nextP2Pos.x && npc.y == nextP2Pos.y){
+      p2sprite = p2still;
+    } else {
+      p2sprite = p2still;
+    }
+    
+    if(position.size()<positionDist){
+      p2sprite = p2still;
+    }
+    
   }
 
   void move() {
     if (keyCode == DOWN && p.y+w < height) {
-      p.y+=5;
+      p.y+=3;
       sprite = fwalking;
     } else if (keyCode == UP && p.y-w > 0) {
-      p.y-=5;
+      p.y-=3;
       sprite = bwalking;
     } else if (keyCode == LEFT && p.x-w > 0) {
-      p.x-=5;
+      p.x-=3;
       sprite = lwalking;
     } else if (keyCode == RIGHT && p.x+w < width) {
-      p.x+=5;
+      p.x+=3;
       sprite = rwalking;
     } else {
       sprite = still;
+      p2sprite = p2still;
     }
+    
+    m();
     
     position.add(new PVector(p.x, p.y));
 
     npc.x = position.get(0).x;
     npc.y = position.get(0).y;
-    if (position.size()>25) {
+    if (position.size()>positionDist) {
       position.remove(0);
     }
   }
@@ -180,12 +223,17 @@ class Gamestate {
   private PVector p;
   private PVector npc;
   private ArrayList<PVector> position;
+  private PVector nextP2Pos;
   protected boolean ifGoal;
   protected String goal;
   protected PVector m;
   protected int f;
+  protected int positionDist;
   
   protected Gif sprite;
+  protected Gif p2sprite;
+  
+  protected PImage bg;
 
  
 

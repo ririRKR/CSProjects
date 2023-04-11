@@ -1,7 +1,7 @@
 class gs1 extends Gamestate{
   
-  gs1(String typeIn, ArrayList<Dialogue> dialogueAIn, int changeIn){
-    super(typeIn, dialogueAIn, changeIn);
+  gs1(String typeIn, ArrayList<Dialogue> dialogueAIn, int changeIn, PImage bgIn){
+    super(typeIn, dialogueAIn, changeIn, bgIn);
     t = 0;
     goal = "Find the sign p2 was talking about";
   }
