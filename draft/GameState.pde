@@ -1,29 +1,36 @@
 import gifAnimation.*;
 class Gamestate {
-  Gamestate(String typeIn, ArrayList<Dialogue> dialogueAIn, int changeIn, PImage bgIn) {
+  Gamestate(String typeIn, ArrayList<Dialogue> dialogueAIn, int changeIn, PImage bgIn, ArrayList<PImage> mapIn, PVector startPosIn, PVector restrictionInX, PVector restrictionInY) {
     type = typeIn;
     dialogueA = dialogueAIn;
     change = changeIn;
+    
+    restrictionX = restrictionInX;
+    restrictionY = restrictionInY;
+    startPos = startPosIn;
+    
     center = new PVector(width/2, height/2);
-    p = new PVector(width/2, height/2);
-    npc = new PVector(width/2, height/2);
+    if(type.equals("movement")){
+    p = new PVector(startPos.x, startPos.y);
+    npc = new PVector(startPos.x, startPos.y);
+    }
     m = new PVector(mouseX, mouseY);
-    inc = 1;
     w = 75;
     ifGoal = false;
     f = 0;
     positionDist = 75;
     sprite = still;
     p2sprite = p2still;
-    
+    map = mapIn;
     bg = bgIn;
 
     
+    if(type.equals("movement")){
     nextP2Pos = new PVector(0, 0);
     position = new ArrayList<PVector>();
     for(int i = 0; i < positionDist; i++){
-       position.add(new PVector(width/2, height/2));
-    }
+       position.add(new PVector(startPos.x, startPos.y));
+    }}
   }
 
   void display() {
@@ -41,7 +48,6 @@ class Gamestate {
   }
 
   void dialogue() {
-    
     if(type.equals("dialogue")){
       rectMode(CENTER);
       fill(255, 50);
@@ -80,9 +86,22 @@ class Gamestate {
     
     m.x = mouseX - (center.x-p.x);
     m.y = mouseY - (center.y-p.y);
-    translate(center.x-p.x, center.y-p.y); 
-    image(grassTest, width/2, height/2);
+    translate(center.x-p.x, center.y-p.y);
+    imageMode(CORNER);
+    image(map.get(0), -width, -height+5);
+    image(map.get(1), 0, -height+5);
+    image(map.get(2), width, -height+5);
+    image(map.get(3), -width, 0);
+    image(map.get(4), 0, 0);
+    image(map.get(5), width, 0);
+    image(map.get(6), -width, height-5);
+    image(map.get(7), 0, height-5);
+    image(map.get(8), width, height-5);
+    
     totalObjDAC();
+    imageMode(CENTER);
+    image(tree, width/2, height/2);
+    //image(tree, width+width/2, height);
     
     if(p.y<npc.y){
       image(sprite, p.x, p.y, width*100/1440, height*200/900);
@@ -99,8 +118,8 @@ class Gamestate {
     //println("npc.y: " + npc.y);
     //println("p.y: " + p.y);
     
-    circle(100, 100, 200);
-    square(500, 600, 200);
+  //  circle(100, 100, 200);
+   // square(500, 600, 200);
     popMatrix();
     
     
@@ -152,17 +171,17 @@ class Gamestate {
   }
 
   void move() {
-    if (keyCode == DOWN && p.y+w < height) {
-      p.y+=3;
+    if (keyCode == DOWN && p.y+w < restrictionY.y) {
+      p.y+=10;
       sprite = fwalking;
-    } else if (keyCode == UP && p.y-w > 0) {
-      p.y-=3;
+    } else if (keyCode == UP && p.y-w > restrictionY.x) {
+      p.y-=10;
       sprite = bwalking;
-    } else if (keyCode == LEFT && p.x-w > 0) {
-      p.x-=3;
+    } else if (keyCode == LEFT  && p.x-w > restrictionX.x) {
+      p.x-=10;
       sprite = lwalking;
-    } else if (keyCode == RIGHT && p.x+w < width) {
-      p.x+=3;
+    } else if (keyCode == RIGHT && p.x+w < restrictionY.y) {
+      p.x+=10;
       sprite = rwalking;
     } else {
       sprite = still;
@@ -235,9 +254,13 @@ class Gamestate {
   
   protected PImage bg;
 
- 
-
+  protected ArrayList<PImage> map;
+  protected PVector restrictionX, restrictionY;
+  protected PVector startPos;
+  
+  
   private PVector center;
-  private int inc;
   private int w;
+  
+ // private ArrayList<
 }

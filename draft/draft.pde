@@ -3,18 +3,19 @@ import java.util.*;
 
 PFont pixel; PFont smallPixel;
 public PImage grassTest; public PImage bgGS0;
+public PImage tree;
 ArrayList<Gamestate> gamestates;
-ArrayList<Dialogue> DG0;
-ArrayList<Dialogue> DG1;
+ArrayList<Dialogue> DG0, DG1, DG2;
+ArrayList<PImage> MG1;
 Gamestate currentGS;
 int cGSN;
 String mc;
 String p2;
 String computer;
-public Gif fwalking; public Gif still; public Gif bwalking; public Gif rwalking; public Gif lwalking;
-public Gif p2fwalking; public Gif p2still; public Gif p2bwalking; public Gif p2rwalking; public Gif p2lwalking;
+public Gif fwalking, still, bwalking, rwalking, lwalking;
+public Gif p2fwalking, p2still, p2bwalking, p2rwalking, p2lwalking;
 
-String dg0file; String dg1file;
+String dg0file, dg1file, dg2file;
 
 void setup() {
   
@@ -48,24 +49,35 @@ void setup() {
   grassTest.resize(width, height);
   bgGS0 = loadImage("2bgGS0.jpg");
   bgGS0.resize(width+width*6/1440, height);
-  
- 
+  tree = loadImage("TREE.png");
+  tree.resize(width*285/1440, height*407/900);
+
  
   dg0file = "Dgs0.txt";
   dg1file = "Dgs1.txt";
+  dg2file = "Dgs2.txt";
   
   ArrayList<Dialogue> DG0 = new ArrayList<Dialogue>();
   DG0 = loadDialogue(dg0file);
 
   ArrayList<Dialogue> DG1 = new ArrayList<Dialogue>();
   DG1 = loadDialogue(dg1file);
-
+  
+  ArrayList<Dialogue> DG2 = new ArrayList<Dialogue>();
+  DG2 = loadDialogue(dg2file);
+  
+  ArrayList<PImage> MG1 = new ArrayList<PImage>();
+  for(int i = 0; i<=8; i++){
+    MG1.add(bgGS0);
+  }
 
   gamestates = new ArrayList<Gamestate>();
-  Gamestate gs0 = new gs0("dialogue", DG0, 18, bgGS0);
-  Gamestate gs1 = new gs1("movement", DG1, 4, null);
+  Gamestate gs0 = new gs0("dialogue", DG0, 18, bgGS0, null, null, null, null);
+  Gamestate gs1 = new gs1("movement", DG1, 4, null, MG1, new PVector(width/2, height*1.45), new PVector(0, width), new PVector(0, height*1.5));
+  Gamestate gs2 = new gs2("dialogue", DG2, 5, bgGS0, null, null, null, null);
   gamestates.add(gs0);
   gamestates.add(gs1);
+  gamestates.add(gs2);
 
   imageMode(CENTER);
 
@@ -127,5 +139,4 @@ ArrayList<Dialogue> loadDialogue(String filename) {
 void keyReleased(){
   gamestates.get(cGSN).sprite = still;
   gamestates.get(cGSN).p2sprite = p2still;
-  println(gamestates.get(cGSN).p2sprite);
 }

@@ -1,0 +1,5 @@
+ = 
+mc=According to the map, we’re down here.
+mc=There’s a mansion up ahead.
+mc=Maybe the owner’s will offer us shelter?
+p2=It’s worth a shot.
