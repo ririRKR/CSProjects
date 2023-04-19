@@ -1,6 +1,6 @@
 import gifAnimation.*;
 class Gamestate {
-  Gamestate(String typeIn, ArrayList<Dialogue> dialogueAIn, int changeIn, PImage bgIn, ArrayList<PImage> mapIn, PVector startPosIn, PVector restrictionInX, PVector restrictionInY) {
+  Gamestate(String typeIn, ArrayList<Dialogue> dialogueAIn, int changeIn, PImage bgIn, ArrayList<PImage> mapIn, ArrayList<Obj> objsIn, PVector startPosIn, PVector restrictionInX, PVector restrictionInY) {
     type = typeIn;
     dialogueA = dialogueAIn;
     change = changeIn;
@@ -23,6 +23,7 @@ class Gamestate {
     p2sprite = p2still;
     map = mapIn;
     bg = bgIn;
+    objs = objsIn;
 
     
     if(type.equals("movement")){
@@ -99,10 +100,10 @@ class Gamestate {
     image(map.get(8), width, height-5);
     
     totalObjDAC();
-    imageMode(CENTER);
-    image(tree, width/2, height/2);
+    //imageMode(CENTER);
+    //image(tree, width/2, height/2);
     //image(tree, width+width/2, height);
-    
+    /*
     if(p.y<npc.y){
       image(sprite, p.x, p.y, width*100/1440, height*200/900);
       sprite.loop();
@@ -113,7 +114,7 @@ class Gamestate {
       p2sprite.loop();
       image(sprite, p.x, p.y, width*100/1440, height*200/900);
       sprite.loop();
-    }
+    }*/
     
     //println("npc.y: " + npc.y);
     //println("p.y: " + p.y);
@@ -140,9 +141,27 @@ class Gamestate {
   }
 
   void totalObjDAC(){
+    imageMode(CENTER);
+    objs.sort((left, right) -> int(left.bottomOf) - int(right.bottomOf));
+    for(Obj o: objs){
+      if(o.objName.equals("mc")){
+        image(sprite, p.x, p.y, width*100/1440, height*200/900);
+        sprite.loop();
+        o.bottomOf = p.y;
+      } else if (o.objName.equals("p2")){
+        image(p2sprite, npc.x, npc.y, width*100/1440, height*200/900);
+        p2sprite.loop();
+      } else{
+        o.objDisplay();
+      }
+      println(o.objName + " " + o.bottomOf);
+        
+      }
+    }
+   // System.out.println(objs);
     
     
-  }
+  
   
   void m() {
     //circle(p.x, p.y, w);
@@ -257,6 +276,8 @@ class Gamestate {
   protected ArrayList<PImage> map;
   protected PVector restrictionX, restrictionY;
   protected PVector startPos;
+  
+  protected ArrayList<Obj> objs;
   
   
   private PVector center;

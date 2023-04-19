@@ -1,7 +1,7 @@
 class gs0 extends Gamestate{
   
-  gs0(String typeIn, ArrayList<Dialogue> dialogueAIn, int changeIn, PImage bgIn, ArrayList<PImage> mapIn, PVector startPosIn, PVector restrictionInX, PVector restrictionInY){
-    super(typeIn, dialogueAIn, changeIn, bgIn, mapIn, startPosIn, restrictionInX, restrictionInY);
+  gs0(String typeIn, ArrayList<Dialogue> dialogueAIn, int changeIn, PImage bgIn, ArrayList<PImage> mapIn, ArrayList<Obj> objsIn, PVector startPosIn, PVector restrictionInX, PVector restrictionInY){
+    super(typeIn, dialogueAIn, changeIn, bgIn, mapIn, objsIn, startPosIn, restrictionInX, restrictionInY);
     phonegs0 = loadImage("phonegs0.png");
     phonegs0.resize(width/int(2.5), height/int(2.5));
   }

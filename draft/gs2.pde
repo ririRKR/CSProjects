@@ -1,7 +1,7 @@
 class gs2 extends Gamestate{
   
-  gs2(String typeIn, ArrayList<Dialogue> dialogueAIn, int changeIn, PImage bgIn, ArrayList<PImage> mapIn, PVector startPosIn, PVector restrictionInX, PVector restrictionInY){
-    super(typeIn, dialogueAIn, changeIn, bgIn, mapIn, startPosIn, restrictionInX, restrictionInY);
+  gs2(String typeIn, ArrayList<Dialogue> dialogueAIn, int changeIn, PImage bgIn, ArrayList<PImage> mapIn, ArrayList<Obj> objsIn, PVector startPosIn, PVector restrictionInX, PVector restrictionInY){
+    super(typeIn, dialogueAIn, changeIn, bgIn, mapIn, objsIn, startPosIn, restrictionInX, restrictionInY);
   }
 
   void phone(){

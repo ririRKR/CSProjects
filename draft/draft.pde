@@ -7,6 +7,7 @@ public PImage tree;
 ArrayList<Gamestate> gamestates;
 ArrayList<Dialogue> DG0, DG1, DG2;
 ArrayList<PImage> MG1;
+ArrayList<Obj> objs1;
 Gamestate currentGS;
 int cGSN;
 String mc;
@@ -16,6 +17,7 @@ public Gif fwalking, still, bwalking, rwalking, lwalking;
 public Gif p2fwalking, p2still, p2bwalking, p2rwalking, p2lwalking;
 
 String dg0file, dg1file, dg2file;
+String obj1file;
 
 void setup() {
   
@@ -49,13 +51,17 @@ void setup() {
   grassTest.resize(width, height);
   bgGS0 = loadImage("2bgGS0.jpg");
   bgGS0.resize(width+width*6/1440, height);
-  tree = loadImage("TREE.png");
-  tree.resize(width*285/1440, height*407/900);
+ // tree = loadImage("TREE.png");
+  //tree.resize(width*285/1440, height*407/900);
+
+  
 
  
   dg0file = "Dgs0.txt";
   dg1file = "Dgs1.txt";
   dg2file = "Dgs2.txt";
+  
+  obj1file = "Obj1.txt";
   
   ArrayList<Dialogue> DG0 = new ArrayList<Dialogue>();
   DG0 = loadDialogue(dg0file);
@@ -66,15 +72,18 @@ void setup() {
   ArrayList<Dialogue> DG2 = new ArrayList<Dialogue>();
   DG2 = loadDialogue(dg2file);
   
+  ArrayList<Obj> objs1 = new ArrayList<Obj>();
+  objs1 = loadSprites(obj1file);
+  
   ArrayList<PImage> MG1 = new ArrayList<PImage>();
   for(int i = 0; i<=8; i++){
     MG1.add(bgGS0);
   }
 
   gamestates = new ArrayList<Gamestate>();
-  Gamestate gs0 = new gs0("dialogue", DG0, 18, bgGS0, null, null, null, null);
-  Gamestate gs1 = new gs1("movement", DG1, 4, null, MG1, new PVector(width/2, height*1.45), new PVector(0, width), new PVector(0, height*1.5));
-  Gamestate gs2 = new gs2("dialogue", DG2, 5, bgGS0, null, null, null, null);
+  Gamestate gs0 = new gs0("dialogue", DG0, 18, bgGS0, null, null, null, null, null);
+  Gamestate gs1 = new gs1("movement", DG1, 4, null, MG1, objs1,new PVector(width/2, height*1.45), new PVector(0, width), new PVector(0, height*1.5));
+  Gamestate gs2 = new gs2("dialogue", DG2, 5, bgGS0, null, null, null, null, null);
   gamestates.add(gs0);
   gamestates.add(gs1);
   gamestates.add(gs2);
@@ -135,6 +144,38 @@ ArrayList<Dialogue> loadDialogue(String filename) {
   }
     return DArrayList;
 }
+
+
+ArrayList<Obj> loadSprites(String filename) {
+  String[] upload = loadStrings(filename);
+  ArrayList<Obj> OArrayList = new ArrayList<Obj>();
+  
+  for (String s : upload) {
+    String[] five = s.split("=");
+    if (five.length!=6) {
+      System.out.println("Length is not 6");
+    }
+   
+    String uploadName = five[0];
+    println("name: " + uploadName);
+    PImage uploadImg = loadImage(five[1]);
+    println("IMG: " + uploadImg);
+    PVector uploadResize = new PVector(width*float(five[2]), height*float(five[3]));
+    //println(uploadResize);
+    uploadImg.resize(int(uploadResize.x), int(uploadResize.y));
+    PVector uploadPos = new PVector(width*float(five[4]), height*float(five[5]));
+    println("POS: " + uploadPos);
+    //String speech = three[1];
+    
+    Obj o = new Obj(uploadName, uploadImg, uploadPos);
+    OArrayList.add(o);
+   
+    o.bottomOf = o.objPos.y+(height*float(five[3])/4);
+
+  }
+    return OArrayList;
+}
+
 
 void keyReleased(){
   gamestates.get(cGSN).sprite = still;
