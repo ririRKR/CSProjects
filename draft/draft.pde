@@ -2,7 +2,9 @@ import gifAnimation.*;
 import java.util.*;
 
 PFont pixel; PFont smallPixel;
-public PImage grassTest; public PImage bgGS0;
+public PImage grassTest; public PImage bgGS0; 
+public PImage blank;
+public PImage blankRoad, trackRoad, fullTrack;
 public PImage tree;
 ArrayList<Gamestate> gamestates;
 ArrayList<Dialogue> DG0, DG1, DG2;
@@ -49,14 +51,20 @@ void setup() {
   
   grassTest = loadImage("grasstest.png");
   grassTest.resize(width, height);
-  bgGS0 = loadImage("2bgGS0.jpg");
-  bgGS0.resize(width+width*6/1440, height);
+  bgGS0 = loadImage("2bgGS0.png");
+  bgGS0.resize(width+width*8/1440, height);
+  
+  
+  blank = loadImage("blank.png");
+  blankRoad = loadImage("blankroad.png");
+  blankRoad.resize(width+width*8/1440, height);
+  trackRoad = loadImage("roadtrack.png");
+  trackRoad.resize(width+width*8/1440, height);
+  fullTrack = loadImage("fulltrack.png");
+  fullTrack.resize(width+width*8/1440, height);
  // tree = loadImage("TREE.png");
   //tree.resize(width*285/1440, height*407/900);
 
-  
-
- 
   dg0file = "Dgs0.txt";
   dg1file = "Dgs1.txt";
   dg2file = "Dgs2.txt";
@@ -74,15 +82,16 @@ void setup() {
   
   ArrayList<Obj> objs1 = new ArrayList<Obj>();
   objs1 = loadSprites(obj1file);
+  /*for(Obj o: objs1){
+    println(o.getObjName() + " " + o.objPos);
+  }*/
   
   ArrayList<PImage> MG1 = new ArrayList<PImage>();
-  for(int i = 0; i<=8; i++){
-    MG1.add(bgGS0);
-  }
+  MG1.add(grassTest); MG1.add(grassTest);  MG1.add(grassTest); MG1.add(grassTest); MG1.add(grassTest); MG1.add(grassTest); MG1.add(blankRoad); MG1.add(trackRoad); MG1.add(fullTrack); 
 
   gamestates = new ArrayList<Gamestate>();
   Gamestate gs0 = new gs0("dialogue", DG0, 18, bgGS0, null, null, null, null, null);
-  Gamestate gs1 = new gs1("movement", DG1, 4, null, MG1, objs1,new PVector(width/2, height*1.45), new PVector(0, width), new PVector(0, height*1.5));
+  Gamestate gs1 = new gs1("movement", DG1, 4, null, MG1, objs1,new PVector(width/2, height*1.45), new PVector(0, width), new PVector(height*1.5, height*1.5));
   Gamestate gs2 = new gs2("dialogue", DG2, 5, bgGS0, null, null, null, null, null);
   gamestates.add(gs0);
   gamestates.add(gs1);
@@ -103,6 +112,8 @@ void draw() {
   if (currentGS.getDialogueNumber() == currentGS.getChange()) {
     cGSN++;
   }
+  //circle(mouseX, mouseY, 50);
+ // println(currentGS.getDialogueNumber());
 }
 
 void mousePressed() {
@@ -169,6 +180,10 @@ ArrayList<Obj> loadSprites(String filename) {
     
     Obj o = new Obj(uploadName, uploadImg, uploadPos);
     OArrayList.add(o);
+    
+    //println(width*float(five[2]));
+    
+    o.dim.x = width*float(five[2]); o.dim.y = height*float(five[3]);
    
     o.bottomOf = o.objPos.y+(height*float(five[3])/4);
 

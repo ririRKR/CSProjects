@@ -18,8 +18,8 @@ class gs0 extends Gamestate{
   }
   
   void mouseInteraction(){
-    println("mx: " + mouseX + " my: " + mouseY);
-    println(width/2-width/int(2.5));
+    //println("mx: " + mouseX + " my: " + mouseY);
+    //println(width/2-width/int(2.5));
     if(dialogueNumber!=10 && dialogueNumber != 11){
        dialogueNumber++;
     } else if(dialogueNumber==11){ 

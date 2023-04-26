@@ -1,2 +1,5 @@
 tree=TREE.png=0.2=.45=.5=.5
 mc=TREE.png=0.2=.45=.5=1.45
+p2=TREE.png=0.2=.45=.5=1.45
+sign=blank.png=0.1=0.2=.28=1.46
+car=car.png=0.38=0.31=.6=1.62

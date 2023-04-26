@@ -4,15 +4,15 @@ class Gamestate {
     type = typeIn;
     dialogueA = dialogueAIn;
     change = changeIn;
-    
+
     restrictionX = restrictionInX;
     restrictionY = restrictionInY;
     startPos = startPosIn;
-    
+
     center = new PVector(width/2, height/2);
-    if(type.equals("movement")){
-    p = new PVector(startPos.x, startPos.y);
-    npc = new PVector(startPos.x, startPos.y);
+    if (type.equals("movement")) {
+      p = new PVector(startPos.x, startPos.y);
+      npc = new PVector(startPos.x, startPos.y);
     }
     m = new PVector(mouseX, mouseY);
     w = 75;
@@ -25,19 +25,20 @@ class Gamestate {
     bg = bgIn;
     objs = objsIn;
 
-    
-    if(type.equals("movement")){
-    nextP2Pos = new PVector(0, 0);
-    position = new ArrayList<PVector>();
-    for(int i = 0; i < positionDist; i++){
-       position.add(new PVector(startPos.x, startPos.y));
-    }}
+
+    if (type.equals("movement")) {
+      nextP2Pos = new PVector(0, 0);
+      position = new ArrayList<PVector>();
+      for (int i = 0; i < positionDist; i++) {
+        position.add(new PVector(startPos.x, startPos.y));
+      }
+    }
   }
 
   void display() {
     if (type.equals("dialogue")) {
       image(bg, width/2, height/2);
-     // background();
+      // background();
       dialogue();
     } else if (type.equals("movement")) {
       movement();
@@ -49,12 +50,12 @@ class Gamestate {
   }
 
   void dialogue() {
-    if(type.equals("dialogue")){
+    if (type.equals("dialogue")) {
       rectMode(CENTER);
       fill(255, 50);
       rect(width/2, height*.78, width, 200);
     }
-    
+
     textFont(pixel);
     if (dialogueA.get(dialogueNumber).getName().equals("")) { //computer
       fill(#B4DDFF);
@@ -66,7 +67,20 @@ class Gamestate {
     text(dialogueA.get(dialogueNumber).getSpeech(), width/12, height*.80, width*.90, height*.97);
     text(dialogueA.get(dialogueNumber).getName(), width/12, height*.75);
     rectMode(CENTER);
-   
+  }
+
+  void dialogue(String name, String text) {
+    textFont(pixel);
+    if (name.equals("")) { //computer
+      fill(#B4DDFF);
+    } else {
+      fill(0);
+    }
+    rectMode(CORNER);
+    textLeading(75);
+    text(text, width/12, height*.80, width*.90, height*.97);
+    text(name, width/12, height*.75);
+    rectMode(CENTER);
   }
 
   void goalBox() {
@@ -81,134 +95,146 @@ class Gamestate {
 
 
   void movement() {
-    
+
     fill(0);
     pushMatrix();
-    
+
     m.x = mouseX - (center.x-p.x);
     m.y = mouseY - (center.y-p.y);
     translate(center.x-p.x, center.y-p.y);
     imageMode(CORNER);
-    image(map.get(0), -width, -height+5);
+    image(map.get(0), -width+5, -height+5);
     image(map.get(1), 0, -height+5);
-    image(map.get(2), width, -height+5);
+    image(map.get(2), width+5, -height+5);
     image(map.get(3), -width, 0);
     image(map.get(4), 0, 0);
     image(map.get(5), width, 0);
-    image(map.get(6), -width, height-5);
+    image(map.get(6), -width+5, height-5);
     image(map.get(7), 0, height-5);
-    image(map.get(8), width, height-5);
-    
+    image(map.get(8), width+5, height-5);
+
     totalObjDAC();
     //imageMode(CENTER);
     //image(tree, width/2, height/2);
     //image(tree, width+width/2, height);
     /*
     if(p.y<npc.y){
-      image(sprite, p.x, p.y, width*100/1440, height*200/900);
-      sprite.loop();
-      image(p2sprite, npc.x, npc.y, width*100/1440, height*200/900);
-      p2sprite.loop();
-    } else if(p.y>npc.y || p.y == npc.y){
-      image(p2sprite, npc.x, npc.y, width*100/1440, height*200/900);
-      p2sprite.loop();
-      image(sprite, p.x, p.y, width*100/1440, height*200/900);
-      sprite.loop();
-    }*/
-    
+     image(sprite, p.x, p.y, width*100/1440, height*200/900);
+     sprite.loop();
+     image(p2sprite, npc.x, npc.y, width*100/1440, height*200/900);
+     p2sprite.loop();
+     } else if(p.y>npc.y || p.y == npc.y){
+     image(p2sprite, npc.x, npc.y, width*100/1440, height*200/900);
+     p2sprite.loop();
+     image(sprite, p.x, p.y, width*100/1440, height*200/900);
+     sprite.loop();
+     }*/
+
     //println("npc.y: " + npc.y);
     //println("p.y: " + p.y);
-    
-  //  circle(100, 100, 200);
-   // square(500, 600, 200);
+
+    //  circle(100, 100, 200);
+    // square(500, 600, 200);
     popMatrix();
-    
-    
+
+
     fill(50);
-   // text("mouseXY: " + mouseX + " " + mouseY, width/2, height/2);
+    // text("mouseXY: " + mouseX + " " + mouseY, width/2, height/2);
     //text("t mouse: " + m.x + " " + m.y, width/2, height*2/3);
 
+    //dialogue();
     if (!dialogueA.get(dialogueNumber).getSpeech().equals("")) { //if there is something to say
       dialogue();
     }
   }
-  
-  String objectInteraction (String objName, PVector objPos, int objW, int objH){
-    if(m.x>objPos.x-(objW/2) && m.x<objPos.x+(objW/2) && m.y > objPos.y-(objH/2) && m.y<objPos.y+(objH/2)){
-      return objName;
-    }
-    return "empty";
-  }
 
-  void totalObjDAC(){
+  String objInteraction(Obj o) {
+    if (!o.getObjName().equals("p2")) {
+      if (m.x>o.objPos.x-(o.dim.x/2) && m.x<o.objPos.x+(o.dim.x/2) && m.y > o.objPos.y-(o.dim.y/2) && m.y<o.objPos.y+(o.dim.y/2)) {
+        return o.objName;
+        //text(o.objName, width/2, height/2);
+      } else return "empty"; //else {
+      //text("empty", width/2, height/2);
+    } else return "p2";
+    //}
+    
+  }
+  /*
+  String objectInteraction (String objName, PVector objPos, int objW, int objH){
+   if(m.x>objPos.x-(objW/2) && m.x<objPos.x+(objW/2) && m.y > objPos.y-(objH/2) && m.y<objPos.y+(objH/2)){
+   return objName;
+   }
+   return "empty";
+   }
+   */
+  void totalObjDAC() {
     imageMode(CENTER);
     objs.sort((left, right) -> int(left.bottomOf) - int(right.bottomOf));
-    for(Obj o: objs){
-      if(o.objName.equals("mc")){
+    for (Obj o : objs) {
+      if (o.objName.equals("mc")) {
         image(sprite, p.x, p.y, width*100/1440, height*200/900);
         sprite.loop();
         o.bottomOf = p.y;
-      } else if (o.objName.equals("p2")){
+      } else if (o.objName.equals("p2")) {
         image(p2sprite, npc.x, npc.y, width*100/1440, height*200/900);
         p2sprite.loop();
-      } else{
+      } else {
         o.objDisplay();
       }
-      println(o.objName + " " + o.bottomOf);
-        
-      }
+      // println(o.objName + " " + o.bottomOf);
     }
-   // System.out.println(objs);
-    
-    
-  
-  
+  }
+  // System.out.println(objs);
+
+
+
+
   void m() {
     //circle(p.x, p.y, w);
     nextP2Pos = position.get(1);
 
-    if(npc.x<nextP2Pos.x){ //if the npc is to the left of the next x position
+    if (npc.x<nextP2Pos.x) { //if the npc is to the left of the next x position
       p2sprite = p2rwalking; //move right
-    } else if(npc.x>nextP2Pos.x){
+    } else if (npc.x>nextP2Pos.x) {
       p2sprite = p2lwalking;
-    } else if(npc.x<nextP2Pos.x){
+    } else if (npc.x<nextP2Pos.x) {
       p2sprite = p2lwalking;
-    } else if(npc.y>nextP2Pos.y){
+    } else if (npc.y>nextP2Pos.y) {
       p2sprite = p2bwalking;
-    } else if(npc.y<nextP2Pos.y){
+    } else if (npc.y<nextP2Pos.y) {
       p2sprite = p2fwalking;
-    } else if(npc.x == nextP2Pos.x && npc.y == nextP2Pos.y){
+    } else if (npc.x == nextP2Pos.x && npc.y == nextP2Pos.y) {
       p2sprite = p2still;
     } else {
       p2sprite = p2still;
     }
-    
-    if(position.size()<positionDist){
+
+    if (position.size()<positionDist) {
       p2sprite = p2still;
     }
-    
   }
 
   void move() {
-    if (keyCode == DOWN && p.y+w < restrictionY.y) {
-      p.y+=10;
-      sprite = fwalking;
-    } else if (keyCode == UP && p.y-w > restrictionY.x) {
-      p.y-=10;
-      sprite = bwalking;
-    } else if (keyCode == LEFT  && p.x-w > restrictionX.x) {
-      p.x-=10;
-      sprite = lwalking;
-    } else if (keyCode == RIGHT && p.x+w < restrictionY.y) {
-      p.x+=10;
-      sprite = rwalking;
-    } else {
-      sprite = still;
-      p2sprite = p2still;
+    if (type.equals("movement")) {
+      if (keyCode == DOWN && p.y+w < restrictionY.y) {
+        p.y+=10;
+        sprite = fwalking;
+      } else if (keyCode == UP && p.y-w > restrictionY.x) {
+        p.y-=10;
+        sprite = bwalking;
+      } else if (keyCode == LEFT  && p.x-w > restrictionX.x) {
+        p.x-=10;
+        sprite = lwalking;
+      } else if (keyCode == RIGHT && p.x+w < restrictionY.y) {
+        p.x+=10;
+        sprite = rwalking;
+      } else {
+        sprite = still;
+        p2sprite = p2still;
+      }
     }
-    
     m();
-    
+
     position.add(new PVector(p.x, p.y));
 
     npc.x = position.get(0).x;
@@ -230,7 +256,6 @@ class Gamestate {
   }
 
   void checkGoalBox() {
-    
   }
 
   void gsKP() {
@@ -267,21 +292,21 @@ class Gamestate {
   protected PVector m;
   protected int f;
   protected int positionDist;
-  
+
   protected Gif sprite;
   protected Gif p2sprite;
-  
+
   protected PImage bg;
 
   protected ArrayList<PImage> map;
   protected PVector restrictionX, restrictionY;
   protected PVector startPos;
-  
+
   protected ArrayList<Obj> objs;
-  
-  
+
+
   private PVector center;
   private int w;
-  
- // private ArrayList<
+
+  // private ArrayList<
 }
