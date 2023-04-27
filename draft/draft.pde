@@ -22,7 +22,6 @@ String dg0file, dg1file, dg2file;
 String obj1file;
 
 void setup() {
-  
   fullScreen();
   //size(1440, 900);
   //fullScreen();
@@ -35,7 +34,7 @@ void setup() {
   computer = "";
   pixel = createFont("dogica.ttf", 28);
   smallPixel = createFont("dogica.ttf", 15);
-  cGSN = 1;
+  cGSN = 0;
  
   fwalking = new Gif(this, "walking.gif");
   still = new Gif(this, "still.gif");
@@ -114,6 +113,13 @@ void draw() {
   }
   //circle(mouseX, mouseY, 50);
  // println(currentGS.getDialogueNumber());
+ 
+ fill(0);
+ rectMode(CORNER);
+ rect(0, 0, width, 40);
+ rect(width-40, 0, 40, height);
+ //rect(0, height-25, width, 25);
+ rect(0, 0, 40, height);
 }
 
 void mousePressed() {

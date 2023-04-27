@@ -87,9 +87,11 @@ class Gamestate {
     rectMode(CORNER);
     textFont(smallPixel);
     fill(#F7DC41);
-    text("NEW TASK:", width*.80, height*0.04);
-    fill(0);
-    text(goal, width*.80, height*0.05, width*.2, height*0.08);
+    //text("NEW TASK:", width*.80, height*0.04);
+    text("NEW TASK:", width*.80, height*0.08);
+    fill(255);
+   // text(goal, width*.80, height*0.05, width*.2, height*0.08);
+    text(goal, width*.75, height*0.1, width*.2, height*0.08);
     rectMode(CENTER);
   }
 

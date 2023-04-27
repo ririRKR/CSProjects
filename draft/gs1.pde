@@ -3,7 +3,7 @@ class gs1 extends Gamestate {
   gs1(String typeIn, ArrayList<Dialogue> dialogueAIn, int changeIn, PImage bgIn, ArrayList<PImage> mapIn, ArrayList<Obj> objsIn, PVector startPosIn, PVector restrictionInX, PVector restrictionInY) {
     super(typeIn, dialogueAIn, changeIn, bgIn, mapIn, objsIn, startPosIn, restrictionInX, restrictionInY);
     t = 0;
-    goal = "Find the sign p2 was talking about";
+    goal = "Find the sign B was talking about";
   }
 
   void phone() {
